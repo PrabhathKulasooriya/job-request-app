@@ -2,9 +2,9 @@
 
 import React, { useState, useContext } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { AppContext } from "@/app/_context/AppContext.jsx";
-
+import {X} from "lucide-react";
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -16,6 +16,8 @@ const RegisterPage = () => {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect") || "/";
 
   const { setToken, setUser } = useContext(AppContext);
 
@@ -26,6 +28,10 @@ const RegisterPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if(form.password.length < 8){
+      setError("Password must be at least 8 characters long.");
+      return;
+    }
     if (form.password !== form.confirmPassword) {
       setError("Passwords do not match.");
       return;
@@ -55,7 +61,7 @@ const RegisterPage = () => {
       setToken(data.token);
       setUser(data.user);
 
-      router.push("/");
+      router.push(redirectTo);
     } catch (err) {
       setError(
         err.response?.data?.message || "Registration failed. Please try again.",
@@ -66,7 +72,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 md:pt-12">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8 space-y-6">
         {/* Header */}
         <div className="text-center space-y-1">
@@ -78,8 +84,9 @@ const RegisterPage = () => {
 
         {/* Error message */}
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-600 text-sm rounded-lg px-4 py-3">
+          <div className="bg-red-50 flex flex-row items-center justify-between border border-red-200 text-red-600 text-sm rounded-lg px-4 py-3">
             {error}
+            <X className=" top-2 right-2 cursor-pointer hover:scale-105" onClick={() => setError("")}/>
           </div>
         )}
 

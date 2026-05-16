@@ -39,7 +39,6 @@ const jobRequestSchema = new mongoose.Schema(
       default: Date.now,
     },
   },
-  { timestamps: true },
 );
 
 const JobRequestModel = mongoose.models.JobRequest || mongoose.model('JobRequest', jobRequestSchema);

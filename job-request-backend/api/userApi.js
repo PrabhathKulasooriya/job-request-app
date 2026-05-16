@@ -1,4 +1,5 @@
 import UserModel from "../models/userModel.js";
+import JobRequestModel from "../models/jopRequestModel.js";
 import validator from 'validator';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -61,6 +62,37 @@ export const loginUser = async (req,res)=>{
 
     }catch(error){
         return res.status(500).json({success:false, message: "Error occurred while logging in user", error: error.message});
+    }
+}
+
+
+//User's jobs
+export const getUserJobs = async (req, res) => {
+  const userId = req.user;
+
+
+  try {
+    const jobs = await JobRequestModel.find({ postedBy: userId }).populate("assignedTo","name email",);
+    return res.status(200).json({ success: true, jobs });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({
+        success: false,
+        message: "Error fetching jobs",
+        error: error.message,
+      });
+  }
+};
+
+//Accepted jobs
+export const getAcceptedJobs = async (req,res) =>{
+    const userId = req.user;
+    try{
+        const jobs = await JobRequestModel.find({assignedTo: userId}).populate("postedBy", "name email");
+        return res.status(200).json({success:true, jobs});
+    }catch(error){
+        return res.status(500).json({success:false, message: "Error occurred while fetching accepted jobs", error: error.message});
     }
 }
 

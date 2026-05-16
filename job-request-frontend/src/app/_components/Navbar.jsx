@@ -10,7 +10,7 @@ import {User,LogOut} from "lucide-react";
 
 const navLinks = [
   { label: "Home", href: "/" },
-  { label: "My Jobs", href: "/myjobs" },
+  { label: "My Jobs", href: "/my-jobs" },
 ];
 
 const Navbar = () => {
@@ -24,7 +24,7 @@ const Navbar = () => {
         {/* Left — Logo */}
         <div className="flex w-1/3 justify-start">
           <Link href="/">
-            <Image src={logo} alt="logo" className="h-auto w-40 md:w-60 p-1" />
+            <Image src={logo} alt="logo" className="h-auto w-40 md:w-50 " />
           </Link>
         </div>
 
@@ -34,7 +34,7 @@ const Navbar = () => {
             <Link
               key={href}
               href={href}
-              className={`text-sm font-medium transition-all duration-300 hover:scale-105 ${
+              className={`text-md font-medium transition-all duration-300 hover:scale-105 ${
                 pathname === href
                   ? "text-black border-b-2 border-black"
                   : "text-gray-600 hover:text-black"
@@ -68,13 +68,13 @@ const Navbar = () => {
         ) : (
           <div className="hidden md:flex w-1/3 justify-end gap-3 pr-1">
             <Link
-              href="/login"
+              href={`/login?redirect=${encodeURIComponent(pathname)}`}
               className="text-sm font-medium px-4 py-1.5 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-100 transition-all duration-200"
             >
               Login
             </Link>
             <Link
-              href="/register"
+              href={`/register?redirect=${encodeURIComponent(pathname)}`}
               className="text-sm font-medium px-4 py-1.5 rounded-full bg-black text-white hover:bg-gray-800 transition-all duration-200"
             >
               Register
@@ -148,14 +148,14 @@ const Navbar = () => {
 
           <div className="flex flex-col gap-3">
             <Link
-              href="/login"
+              href={`/login?redirect=${encodeURIComponent(pathname)}`}
               onClick={() => setMenuOpen(false)}
               className="text-center text-sm font-medium px-4 py-2 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-100 transition-all duration-200"
             >
               Login
             </Link>
             <Link
-              href="/register"
+              href={`/register?redirect=${encodeURIComponent(pathname)}`}
               onClick={() => setMenuOpen(false)}
               className="text-center text-sm font-medium px-4 py-2 rounded-full bg-black text-white hover:bg-gray-800 transition-all duration-200"
             >

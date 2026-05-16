@@ -8,6 +8,8 @@ const AppContextProvider = ({ children }) => {
 
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
+  const [allJobs, setAllJobs] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(()=>{
     const storedToken = localStorage.getItem("token");
@@ -19,6 +21,7 @@ const AppContextProvider = ({ children }) => {
       setUser(JSON.parse(storedUser));
     }
   },[])
+
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -37,7 +40,7 @@ const AppContextProvider = ({ children }) => {
     setToken,
     user,
     setUser,
-    logout
+    logout,
   }
 
   return (

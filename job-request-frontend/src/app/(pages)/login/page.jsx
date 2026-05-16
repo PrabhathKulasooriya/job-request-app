@@ -2,7 +2,7 @@
 
 import React, { useState, useContext } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { AppContext } from "@/app/_context/AppContext.jsx";
 
 
@@ -12,6 +12,8 @@ const LoginPage = () => {
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect") || "/";
 
   const { setToken, setUser } = useContext(AppContext);
 
@@ -44,7 +46,7 @@ const LoginPage = () => {
         localStorage.setItem("user", JSON.stringify(data.user));
         setToken(data.token);
         setUser(data.user);
-        router.push("/");
+        router.push(redirectTo);
 
     } catch (err) {
       setError(
