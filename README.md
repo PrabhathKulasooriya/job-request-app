@@ -25,7 +25,7 @@ A full-stack mini service request board where homeowners can post service reques
 ## Live Demo
 
 - **Frontend:** https://job-request-app.vercel.app
-- **Backend API:** https://job-request-app.up.railway.app
+- **Backend API:** https://job-request-app-production.up.railway.app/
 
 ## Environment Variables
 
