@@ -42,7 +42,7 @@ NEXT_PUBLIC_SERVER_URL=http://localhost:5000
 
 ```bash
 # Clone the repo
-git clone https://github.com/yourusername/job-request-app.git
+git clone  https://github.com/PrabhathKulasooriya/job-request-app.git
 cd job-request-app
 
 # Backend
