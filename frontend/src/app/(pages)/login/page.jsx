@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AppContext } from "@/app/_context/AppContext.jsx";
 
 
 
-const LoginPage = () => {
+const LoginForm = () => {
   const router = useRouter();
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
@@ -148,5 +148,20 @@ const LoginPage = () => {
     </div>
   );
 };
+
+
+const LoginPage = () => {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          Loading...
+        </div>
+      }
+    >
+      <LoginForm />
+    </Suspense>
+  );
+}
 
 export default LoginPage;
