@@ -24,7 +24,13 @@ const Navbar = () => {
         {/* Left — Logo */}
         <div className="flex w-1/3 justify-start">
           <Link href="/">
-            <Image src={logo} alt="logo" className="h-auto w-40 md:w-50 " />
+            <Image
+              src={logo}
+              alt="logo"
+              loading="eager"
+              priority
+              className="h-auto w-40 md:w-50 "
+            />
           </Link>
         </div>
 
@@ -68,18 +74,18 @@ const Navbar = () => {
         ) : (
           <div className="hidden md:flex w-1/3 justify-end gap-3 pr-1">
             <Link
-              href={`/login?redirect=${encodeURIComponent(pathname)}`}
-              className="text-md font-medium  px-4 py-1.5 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-100 transition-all flex flex-row items-center justify-centerduration-200"
-            >
-              <LogIn className="inline-block pr-2" />
-              Login
-            </Link>
-            <Link
               href={`/register?redirect=${encodeURIComponent(pathname)}`}
-              className="text-md font-medium px-4 py-1.5 rounded-full bg-black text-white hover:bg-gray-800 transition-all duration-200 flex flex-row items-center justify-center"
+              className="text-md font-medium  px-4 py-1.5 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-100 transition-all flex flex-row items-center justify-centerduration-200"
             >
               <UserPlus className="inline-block pr-2" />
               Register
+            </Link>
+            <Link
+              href={`/login?redirect=${encodeURIComponent(pathname)}`}
+              className="text-md font-medium px-4 py-1.5 rounded-full bg-black text-white hover:bg-gray-800 transition-all duration-200 flex flex-row items-center justify-center"
+            >
+              <LogIn className="inline-block pr-2" />
+              Login
             </Link>
           </div>
         )}
@@ -150,18 +156,18 @@ const Navbar = () => {
 
           <div className="flex flex-col gap-3">
             <Link
-              href={`/login?redirect=${encodeURIComponent(pathname)}`}
+              href={`/register?redirect=${encodeURIComponent(pathname)}`}
               onClick={() => setMenuOpen(false)}
               className="text-center text-sm font-medium px-4 py-2 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-100 transition-all duration-200"
             >
-              Login
+              Register
             </Link>
             <Link
-              href={`/register?redirect=${encodeURIComponent(pathname)}`}
+              href={`/login?redirect=${encodeURIComponent(pathname)}`}
               onClick={() => setMenuOpen(false)}
               className="text-center text-sm font-medium px-4 py-2 rounded-full bg-black text-white hover:bg-gray-800 transition-all duration-200"
             >
-              Register
+              Login
             </Link>
           </div>
         </div>

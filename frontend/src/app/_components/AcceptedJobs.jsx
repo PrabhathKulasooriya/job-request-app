@@ -2,9 +2,9 @@ import React from "react";
 import Link from "next/link";
 
 const statusBadgeColor = {
-  Open: "bg-indigo-50 text-indigo-600",
+  Open: "bg-green-100 text-green-600",
   "In Progress": "bg-amber-50 text-amber-600",
-  Closed: "bg-gray-100 text-gray-500",
+  Closed: "bg-red-100 text-red-500",
 };
 
 const AcceptedJobs = ({ jobs }) => {

@@ -60,17 +60,24 @@ npm run dev
 
 ## Database Seeding (Optional)
 
-Inserts 25 sample jobs for testing. Run from the `backend` directory:
+Inserts a user and 10 sample jobs for testing. Run from the `backend` directory:
+
+**Seed login credentials:**
+- Email: `seeduser@test.com`
+- Password: `password123`
 
 ```bash
 node seed.js
 ```
 
-> **Warning:** This clears all existing job records before seeding. Comment out `JobRequest.deleteMany()` in `seed.js` to skip the wipe.
+> **Warning:** This clears all existing users and job records before seeding. Comment out `JobRequest.deleteMany()` in `seed.js` to skip the wipe. But running the seed.js script twice without deleting existing users and jobs will create a duplicate user with the same email and will duplicate the same jobs twice.
+
 
 ---
 
 ## API Endpoints
+
+**Jobs**
 
 | Method | Endpoint | Description | Auth |
 |--------|----------|-------------|------|
@@ -79,3 +86,12 @@ node seed.js
 | POST | `/api/jobs` | Create a job | Yes |
 | PATCH | `/api/jobs/:id` | Update job status | Yes |
 | DELETE | `/api/jobs/:id` | Delete a job | Yes |
+
+**Users**
+
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| POST | `/api/users/register` | Register a new user | No |
+| POST | `/api/users/login` | Login and receive a JWT | No |
+| GET | `/api/users/my-jobs` | Get jobs posted by the logged-in user | Yes |
+| GET | `/api/users/accepted-jobs` | Get jobs accepted by the logged-in user | Yes |

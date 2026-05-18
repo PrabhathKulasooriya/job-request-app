@@ -19,9 +19,9 @@ const CATEGORIES = [
 const STATUSES = ["All", "Open", "In Progress", "Closed"];
 
 const statusBadgeColor = {
-  Open: "bg-indigo-50 text-indigo-600",
+  Open: "bg-green-100 text-green-600",
   "In Progress": "bg-amber-50 text-amber-600",
-  Closed: "bg-gray-100 text-gray-500",
+  Closed: "bg-red-100 text-red-500",
 };
 
 const LIMIT = 20;
@@ -36,18 +36,15 @@ const AllJobs = () => {
    const [category, setCategory] = useState("All");
    const [status, setStatus] = useState("All");
    const [showModal, setShowModal] = useState(false);
+   const [hasMore, setHasMore] = useState(false);
    const { token } = useContext(AppContext);
 
   const fetchJobs = async (pageNum = 1, replace = false) => {
     try {
       replace ? setLoading(true) : setLoadingMore(true);
 
-      const params = new URLSearchParams({ page: pageNum, limit: LIMIT });
-      if (category !== "All") params.append("category", category);
-      if (status !== "All") params.append("status", status);
-
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/jobs?${params}`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/jobs?${category !== "All" ? `category=${category}&` : ""}${status !== "All" ? `status=${status}&` : ""}page=${pageNum}&limit=${LIMIT}`,
         { headers: { "Content-Type": "application/json" } },
       );
       const data = await res.json();
@@ -60,6 +57,7 @@ const AllJobs = () => {
           return [...prev, ...newJobs];
         });
         setTotal(data.total ?? 0);
+        setHasMore(data.data.length === LIMIT);
       }
     } catch (err) {
       console.error("Error fetching jobs:", err);
@@ -69,7 +67,6 @@ const AllJobs = () => {
     }
   };
 
-  // Reset to page 1 whenever filters change
   useEffect(() => {
     setPage(1);
     fetchJobs(1, true);
@@ -86,7 +83,6 @@ const AllJobs = () => {
     setTotal((prev) => prev + 1);
   };
 
-  const hasMore = jobs.length < total;
   
   return (
     <section className="mx-auto max-w-6xl px-6 py-10">
