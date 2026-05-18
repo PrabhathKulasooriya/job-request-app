@@ -72,7 +72,7 @@ export const getUserJobs = async (req, res) => {
 
 
   try {
-    const jobs = await JobRequestModel.find({ postedBy: userId }).populate("assignedTo","name email",);
+    const jobs = await JobRequestModel.find({ postedBy: userId }).populate("assignedTo","name email",).sort({ createdAt: -1 });
     return res.status(200).json({ success: true, jobs });
   } catch (error) {
     return res
