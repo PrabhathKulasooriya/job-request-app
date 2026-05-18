@@ -104,8 +104,12 @@ const seedDatabase = async () => {
   try {
     await connectDB();
 
+  //comment out this below section if you want to keep existing data in the database. It will delete all existing job requests before seeding new ones.
+
     await JobRequest.deleteMany();
     console.log("Existing jobs cleared");
+
+  //End of deletion of existing data section *******************************************************************************
 
     await JobRequest.insertMany(sampleJobs);
     console.log(`${sampleJobs.length} sample jobs seeded successfully`);

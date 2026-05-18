@@ -1,6 +1,9 @@
 node_modules
 .env
-Demo.mp4
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 # Logs
 logs
