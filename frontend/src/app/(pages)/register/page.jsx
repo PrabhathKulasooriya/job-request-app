@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { AppContext } from "@/app/_context/AppContext.jsx";
 import {X} from "lucide-react";
 
-const RegisterPage = () => {
+const RegisterForm = () => {
   const router = useRouter();
   const [form, setForm] = useState({
     name: "",
@@ -186,6 +186,20 @@ const RegisterPage = () => {
         </p>
       </div>
     </div>
+  );
+};
+
+const RegisterPage = () => {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          Loading...
+        </div>
+      }
+    >
+      <RegisterForm />
+    </Suspense>
   );
 };
 
