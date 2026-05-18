@@ -11,7 +11,7 @@ import {
   ArrowLeft,
   Loader2,
   CheckCircle,
-  Play,
+  BadgePlus,
   XCircle,
 } from "lucide-react";
 import toast from "react-hot-toast";
@@ -199,7 +199,7 @@ const JobPage = () => {
                   {updating ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
                   ) : (
-                    <Play className="w-4 h-4" />
+                    <BadgePlus className="w-5 h-5" />
                   )}
                   Accept Job
                 </button>

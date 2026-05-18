@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import logo from "@/assets/logo.png";
 import { AppContext } from "@/app/_context/AppContext.jsx";
-import {User,LogOut} from "lucide-react";
+import {User,LogOut, LogIn, UserPlus} from "lucide-react";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -49,9 +49,9 @@ const Navbar = () => {
 
         {token ? (
           <div className="hidden md:flex w-1/3 justify-end gap-3 pr-1">
-            <p className="text-sm font-medium px-3 py-1.5 rounded-full border border-gray-300 text-gray-700 group flex items-center transition-all duration-300 gap-2">
+            <p className="text-sm font-medium px-3 py-1.5 rounded-full border border-gray-300 text-gray-700 group flex items-center transition-all duration-300 gap-2 cursor-pointer">
               <User className="inline-block" />
-              <span className="  group-hover:ml-2 transition-all duration-300 whitespace-nowrap">
+              <span className="   transition-all duration-300 whitespace-nowrap ">
                 {user?.name?.split(" ")[0] || "User"}
               </span>
             </p>
@@ -69,14 +69,16 @@ const Navbar = () => {
           <div className="hidden md:flex w-1/3 justify-end gap-3 pr-1">
             <Link
               href={`/login?redirect=${encodeURIComponent(pathname)}`}
-              className="text-sm font-medium px-4 py-1.5 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-100 transition-all duration-200"
+              className="text-md font-medium  px-4 py-1.5 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-100 transition-all flex flex-row items-center justify-centerduration-200"
             >
+              <LogIn className="inline-block pr-2" />
               Login
             </Link>
             <Link
               href={`/register?redirect=${encodeURIComponent(pathname)}`}
-              className="text-sm font-medium px-4 py-1.5 rounded-full bg-black text-white hover:bg-gray-800 transition-all duration-200"
+              className="text-md font-medium px-4 py-1.5 rounded-full bg-black text-white hover:bg-gray-800 transition-all duration-200 flex flex-row items-center justify-center"
             >
+              <UserPlus className="inline-block pr-2" />
               Register
             </Link>
           </div>

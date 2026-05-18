@@ -42,26 +42,31 @@ export const createJobRequest = async (req, res) => {
 // Get all jobs
 export const getAllJobRequests = async (req, res) => {
   try {
-    const { category, status } = req.query;
+    const { category, status, page = 1, limit = 20 } = req.query;
     const filter = {};
 
     if (category) filter.category = category;
     if (status) filter.status = status;
 
-    const jobRequests = await JobRequestModel.find(filter)
-      .populate("postedBy", "name email")
-      .populate("assignedTo", "name email")
-      .sort({ createdAt: -1 });
+    const skip = (parseInt(page) - 1) * parseInt(limit);
 
-    res.status(200).json({ success: true, data: jobRequests });
+    const [jobRequests, total] = await Promise.all([
+      JobRequestModel.find(filter)
+        .populate("postedBy", "name email")
+        .populate("assignedTo", "name email")
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(parseInt(limit)),
+      JobRequestModel.countDocuments(filter),
+    ]);
+
+    res.status(200).json({ success: true, data: jobRequests, total });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Error fetching job requests",
-        error: error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message: "Error fetching job requests",
+      error: error.message,
+    });
   }
 };
 

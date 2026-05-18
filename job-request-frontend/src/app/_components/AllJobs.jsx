@@ -24,45 +24,69 @@ const statusBadgeColor = {
   Closed: "bg-gray-100 text-gray-500",
 };
 
-
+const LIMIT = 20;
 
 
 const AllJobs = () => {
-  const [jobs, setJobs] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [category, setCategory] = useState("All");
-  const [status, setStatus] = useState("All");
-  const [showModal, setShowModal] = useState(false);
-  const { token } = useContext(AppContext);
+   const [jobs, setJobs] = useState([]);
+   const [total, setTotal] = useState(0);
+   const [page, setPage] = useState(1);
+   const [loading, setLoading] = useState(true);
+   const [loadingMore, setLoadingMore] = useState(false);
+   const [category, setCategory] = useState("All");
+   const [status, setStatus] = useState("All");
+   const [showModal, setShowModal] = useState(false);
+   const { token } = useContext(AppContext);
 
-  const getAllJobs = async () => {
+  const fetchJobs = async (pageNum = 1, replace = false) => {
     try {
-      setLoading(true);
+      replace ? setLoading(true) : setLoadingMore(true);
 
-      const params = new URLSearchParams();
+      const params = new URLSearchParams({ page: pageNum, limit: LIMIT });
       if (category !== "All") params.append("category", category);
       if (status !== "All") params.append("status", status);
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/jobs?${params.toString()}`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/jobs?${params}`,
         { headers: { "Content-Type": "application/json" } },
       );
       const data = await res.json();
-      if (data?.data) setJobs(data.data);
+
+      if (data?.data) {
+        setJobs((prev) => {
+          if (replace) return data.data;
+          const existingIds = new Set(prev.map((j) => j._id));
+          const newJobs = data.data.filter((j) => !existingIds.has(j._id));
+          return [...prev, ...newJobs];
+        });
+        setTotal(data.total ?? 0);
+      }
     } catch (err) {
       console.error("Error fetching jobs:", err);
     } finally {
       setLoading(false);
+      setLoadingMore(false);
     }
   };
 
+  // Reset to page 1 whenever filters change
   useEffect(() => {
-    getAllJobs();
+    setPage(1);
+    fetchJobs(1, true);
   }, [category, status]);
+
+  const handleLoadMore = () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    fetchJobs(nextPage, false);
+  };
 
   const handleJobCreated = (newJob) => {
     setJobs((prev) => [newJob, ...prev]);
+    setTotal((prev) => prev + 1);
   };
+
+  const hasMore = jobs.length < total;
   
   return (
     <section className="mx-auto max-w-6xl px-6 py-10">
@@ -81,7 +105,7 @@ const AllJobs = () => {
           <p className="mt-1 text-sm text-gray-400">
             {loading
               ? "Loading..."
-              : `${jobs.length} job${jobs.length !== 1 ? "s" : ""} found`}
+              : `${total} job${total !== 1 ? "s" : ""} found`}
           </p>
         </div>
         {token ? (
@@ -246,6 +270,19 @@ const AllJobs = () => {
               </div>
             </div>
           ))}
+        </div>
+      )}
+      {!loading && hasMore && (
+        <div className="mt-10 flex justify-center">
+          <button
+            onClick={handleLoadMore}
+            disabled={loadingMore}
+            className="rounded-xl border border-gray-200 bg-white px-6 py-2.5 text-sm font-semibold text-gray-700 shadow-sm transition hover:border-gray-400 hover:bg-gray-50 disabled:opacity-50"
+          >
+            {loadingMore
+              ? "Loading..."
+              : `Load More (${total - jobs.length} remaining)`}
+          </button>
         </div>
       )}
     </section>
